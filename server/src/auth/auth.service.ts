@@ -20,14 +20,11 @@ export class AuthService {
   async login({ username, password }: LoginDto): Promise<AuthResponse> {
     try {
       const user = await this.userRepo.findOne({ where: { username } });
-      // const questionRepository = connection.getRepository(Question);
-      const users = await this.userRepo.findOne({ relations: ["roles"] });
-      console.log("users", users.roles[0].name)
+      // console.log("users", user)
       const isValid = await user.comparePassword(password);
       if (!isValid) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      console.log("linh", user)
       const payload = { username: user.username };
       const token = this.jwtService.sign(payload);
       return { ...user.toJSON(), token };

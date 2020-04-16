@@ -10,7 +10,7 @@ export class Checkin {
   timestamp: Date;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToOne(type => User)
+  @OneToOne(type => User, { cascade: true })
   @JoinColumn({name: "user_id"})
   user: User;
 }

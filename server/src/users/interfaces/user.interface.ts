@@ -6,7 +6,6 @@ export interface UserResponse {
   readonly dob: Date,
   readonly avatar: string,
   readonly created_at: Date,
-  readonly created_by: number,
   readonly roles: number[],
   readonly positions: number[]
 }  

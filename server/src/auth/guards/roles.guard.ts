@@ -14,7 +14,7 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
     console.log("huy", user)
     const hasRole = () =>
-      user.roles.some(role => !!roles.find(item => item === role));
+      user.roles.some(role => !!roles.find(item => item === role.name));
 
     return user && user.roles && hasRole();
   }

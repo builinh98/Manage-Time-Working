@@ -20,13 +20,13 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'Bùi Quang' })
+  @Column({ nullable: true })
   firstname: string;
 
-  @Column({ default: 'Linh' })
+  @Column({ nullable: true })
   lastname: string;
 
-  @Column({ default: 1 })
+  @Column({ default: 1, nullable: true })
   gender: number;
 
   @Column({ nullable: true })
@@ -35,7 +35,7 @@ export class User {
   @Column({ default: 1 })
   active: number;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
+  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
   dob: Date;
 
   @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP", name: "created_at"})
@@ -75,16 +75,6 @@ export class User {
   )
   positions: Position[];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ManyToOne(type => User, user => user.one_many_users)
-  @JoinColumn({ name: "created_by" })
-  one_many_user: User;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToMany(type => User, user => user.one_many_user, { cascade: true })
-  one_many_users: User[];
-
-
 
 
   @BeforeInsert()
@@ -98,7 +88,6 @@ export class User {
   }
 
   toJSON(): UserResponse {
-    // console.log("linh123", classToPlain(this))
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return <UserResponse>classToPlain(this);
   }
