@@ -12,13 +12,16 @@ services:
   #   ports:
   #     - 8080:8080
   #   depends_on:
-  #     - mongo
-  mongo:
-    image: mongo:latest
-    container_name: mongodb
+  #     - mysql 
+  mysql:
+    image: mysql:5.7
+    container_name: mysqldb
     environment: 
-      - MONGODB_DATABASE="managetimeworking"
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: managetimeworking
+      MYSQL_USER: linhbui98
+      MYSQL_PASSWORD: 2321998
     volumes:
-      - ./data:/data/db
+      - ./mysql_data:/var/lib/mysql
     ports:
-        - "27018:27017"
+        - "3306:3306"

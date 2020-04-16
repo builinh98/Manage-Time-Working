@@ -1,15 +1,20 @@
-import { Document } from 'mongoose';
-
-export interface User extends Document {
+export interface UserResponse {
   readonly username: string,
-  readonly password: string,
   readonly firstname: string,
   readonly lastname: string,
-  readonly gender: boolean,
-  readonly dob: string,
-  readonly position: [string],
+  readonly gender: number,
+  readonly dob: Date,
   readonly avatar: string,
-  readonly createdBy: string,
-  readonly createdAt: Date,
-  readonly role_id: string
+  readonly created_at: Date,
+  readonly created_by: number,
+  readonly roles: number[],
+  readonly positions: number[]
+}  
+
+export interface AuthPayload {
+  readonly username: string;
+}
+
+export interface AuthResponse extends UserResponse {
+  readonly token: string;
 }

@@ -1,30 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import {
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { User } from 'src/users/user.entity';
+import { LoginDto } from 'src/users/dto/login.dto';
+import { AuthResponse } from 'src/users/interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
+    @InjectRepository(User) private userRepo: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.getUserByUsername(username);
-    if (user && user.password === password) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
+  async login({ username, password }: LoginDto): Promise<AuthResponse> {
+    try {
+      const user = await this.userRepo.findOne({ where: { username } });
+      // const questionRepository = connection.getRepository(Question);
+      const users = await this.userRepo.findOne({ relations: ["roles"] });
+      console.log("users", users.roles[0].name)
+      const isValid = await user.comparePassword(password);
+      if (!isValid) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      console.log("linh", user)
+      const payload = { username: user.username };
+      const token = this.jwtService.sign(payload);
+      return { ...user.toJSON(), token };
+    } catch (err) {
+      throw new UnauthorizedException('Invalid credentials');
     }
-    return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    console.log(user)
-    return {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      access_token: this.jwtService.sign(payload),
-    };
-  }
 }

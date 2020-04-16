@@ -1,44 +1,37 @@
-import { Controller, Get, Post, Body, Res, Param, HttpStatus, NotFoundException, Delete, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
-import { User } from './interfaces/user.interface';
 
-@Controller('user')
+@Controller('users')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Roles('admin')
   @Post()
-  async create(@Res() res, @Body() createUserDto: CreateUserDto) {
-    const user = await this.usersService.create(createUserDto);
-    return res.status(HttpStatus.OK).json({
-      message: "User has been created successfully!",
-      user
-  });
-  }
-       
-
-  @Get('users')
-  async findAll(@Res() res): Promise<User[]> {
-    const users = await this.usersService.getUsers();
-    return res.status(HttpStatus.OK).json(users);
+  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.create(createUserDto);
   }
 
-  @Get('user/:userID')
-  async getCustomer(@Res() res, @Param('userID') userID) {
-    const user = await this.usersService.getUserByID(userID);
-    console.log("fhsfgsdfsd")
-    if (!user) throw new NotFoundException('User does not exist!');
-    return res.status(HttpStatus.OK).json(user);
+  @Roles('admin')
+  @Get()
+  findAll(): Promise<User[]> {
+    return this.usersService.findAll();
   }
 
-  @Delete('user/delete')
-  async deleteCustomer(@Res() res, @Query('userID') userID) {
-    const user = await this.usersService.deleteUser(userID);
-    if (!user) throw new NotFoundException('User does not exist');
-    return res.status(HttpStatus.OK).json({
-        message: 'User has been deleted',
-        user
-    })
+  @Roles('admin')
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<User> {
+    return this.usersService.findOne(id);
   }
 
+  @Roles('admin')
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
+    return this.usersService.remove(id);
+  }
 }
