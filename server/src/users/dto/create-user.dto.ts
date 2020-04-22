@@ -7,20 +7,20 @@ export class CreateUserDto {
   @IsString()
   readonly password: string;
 
-  // @IsString()
-  // readonly firstname: string;
+  @IsString()
+  readonly firstname: string;
 
-  // @IsString()
-  // readonly lastname: string;
+  @IsString()
+  readonly lastname: string;
 
-  // @IsString()
-  // readonly dob: string;
+  @IsString()
+  readonly dob: Date;
 
-  // @IsInt()
-  // readonly gender: number;
+  @IsInt()
+  readonly gender: number;
 
-  // @IsString()
-  // readonly avatar: string;
+  @IsString()
+  readonly avatar: string;
 
 }
 

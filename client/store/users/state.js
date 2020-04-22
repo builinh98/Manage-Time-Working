@@ -1,9 +1,9 @@
-export default () => ({
-  token: '',
-  userId: '',
-  firstName: '',
-  lastName: '',
-  avatar: '',
-  positions: [],
-  role: ''
-})
+// export default () => ({
+//   token: '',
+//   userId: '',
+//   firstName: '',
+//   lastName: '',
+//   avatar: '',
+//   positions: [],
+//   role: ''
+// })

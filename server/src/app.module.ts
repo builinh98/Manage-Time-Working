@@ -3,6 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
+import { CheckinsModule } from './checkins/checkins.module';
+import { CheckoutsModule } from './checkouts/checkouts.module';
+// import { RequestsModule } from './requests/requests.module';
+// import { ResponsesModule } from './responses/responses.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -17,8 +21,12 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
       entities: ['dist/**/*.entity.js'],
     }),
+    AuthModule,
     UsersModule,
-    AuthModule
+    CheckinsModule,
+    CheckoutsModule,
+    // RequestsModule,
+    // ResponsesModule,
   ],
   controllers: [AppController],
   providers: [AppService]

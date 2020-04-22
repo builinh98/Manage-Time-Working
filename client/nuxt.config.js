@@ -7,7 +7,7 @@ export default {
    */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: 'Manage Working Time',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -39,7 +39,8 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxt/typescript-build'
   ],
   /*
    ** Nuxt.js modules
@@ -57,16 +58,18 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://127.0.0.1:8080/api'
+    baseURL: 'http://127.0.0.1:8080'
   },
 
   auth: {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/login', method: 'post', propertyName: 'token' },
-          logout: { url: '/login', method: 'post' },
-          user: { url: '/user', method: 'get', propertyName: 'user' }
+          login: { url: 'auth/login', method: 'post', propertyName: 'token' },
+          logout: false,
+          user: { url: '/user', method: 'get', propertyName: 'user' },
+          tokenRequired: true,
+          tokenType: 'Bearer'
         }
       }
     }

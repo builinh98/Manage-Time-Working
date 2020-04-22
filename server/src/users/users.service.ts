@@ -15,6 +15,11 @@ export class UsersService {
     const user = new User();
     user.username = createUserDto.username;
     user.password = createUserDto.password;
+    user.firstname = createUserDto.firstname;
+    user.lastname = createUserDto.lastname;
+    user.gender = createUserDto.gender;
+    user.dob = createUserDto.dob;
+    user.avatar = createUserDto.avatar;
 
     return this.usersRepository.save(user);
   }

@@ -1,99 +1,116 @@
 <template>
-  <v-layout column justify-center align-center>
-    <!-- <v-flex xs12 sm8 md6>
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a href="https://vuetifyjs.com" target="_blank"> documentation </a>.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a href="https://chat.vuetifyjs.com/" target="_blank" title="chat">
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <div>
-            <h2>Todos</h2>
-            <ul>
-              <li v-for="(todo, index) in todos" :key="index">
-                <input
-                  :checked="todo.done"
-                  type="checkbox"
-                  @change="toggle(todo)"
-                />
-                <span :class="{ done: todo.done }">
-                  {{ todo.text }}
-                </span>
-              </li>
-              <li>
-                <input
-                  placeholder="What needs to be done?"
-                  @keyup.enter="addTodo"
-                />
-              </li>
-            </ul>
-            <NuxtLink to="/">
-              Home
-            </NuxtLink>
-          </div>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/logout">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex> -->
-  </v-layout>
+  <v-container fluid class="grey lighten-4 fill-height">
+    <v-row class="white no-gutters mb-4">
+      <Breadcumb title />
+    </v-row>
+    <v-row align="center" justify="center" class="fill-height no-gutters mt-n7">
+      <v-col cols="12">
+        <v-row class="no-gutters">
+          <Toolbar />
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-simple-table height="340">
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Calories</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in desserts" :key="item.name">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.calories }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <br />
+            <Pagination />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
+import Breadcumb from '@/components/Breadcumb.vue'
+import Toolbar from '@/components/Toolbar.vue'
+import Pagination from '@/components/Pagination.vue'
 
-<script>
-import { mapGetters } from 'vuex'
-
-export default {
-  middleware: 'authenticated',
-  computed: mapGetters({
-    todos: 'users/users'
-  }),
-  methods: {
-    addTodo(e) {
-      const text = e.target.value
-      if (text.trim()) {
-        this.$store.commit('todos/add', { text })
-      }
-      e.target.value = ''
-    }
+@Component({
+  components: {
+    Breadcumb,
+    Toolbar,
+    Pagination
   }
+})
+export default class Profile extends Vue {
+  headers: Array<Object> = [
+    {
+      text: 'Dessert (100g serving)',
+      align: 'start',
+      sortable: false,
+      value: 'name'
+    },
+    { text: 'Calories', value: 'calories' },
+    { text: 'Fat (g)', value: 'fat' },
+    { text: 'Carbs (g)', value: 'carbs' },
+    { text: 'Protein (g)', value: 'protein' },
+    { text: 'Iron (%)', value: 'iron' }
+  ]
+  desserts: Array<Object> = [
+    {
+      name: 'Frozen Yogurt',
+      calories: 159,
+      fat: 6.0,
+      carbs: 24,
+      protein: 4.0,
+      iron: '1%'
+    },
+    {
+      name: 'Ice cream sandwich',
+      calories: 237,
+      fat: 9.0,
+      carbs: 37,
+      protein: 4.3,
+      iron: '1%'
+    },
+    {
+      name: 'Eclair',
+      calories: 262,
+      fat: 16.0,
+      carbs: 23,
+      protein: 6.0,
+      iron: '7%'
+    },
+    {
+      name: 'Cupcake',
+      calories: 305,
+      fat: 3.7,
+      carbs: 67,
+      protein: 4.3,
+      iron: '8%'
+    },
+     {
+      name: 'Cupcake',
+      calories: 305,
+      fat: 3.7,
+      carbs: 67,
+      protein: 4.3,
+      iron: '8%'
+    },
+     {
+      name: 'Cupcake',
+      calories: 305,
+      fat: 3.7,
+      carbs: 67,
+      protein: 4.3,
+      iron: '8%'
+    }
+  ]
 }
 </script>
+
