@@ -10,7 +10,7 @@
     <template v-slot:activator="{ on }">
       <v-text-field
         v-model="computedDateFormatted"
-        label="Date Of Birth"
+        label="Dob"
         hint="MM/DD/YYYY"
         persistent-hint
         prepend-icon="event"
@@ -39,6 +39,7 @@ export default {
   watch: {
     date(val) {
       this.dateFormatted = this.formatDate(this.date)
+      this.$emit('change-dob', this.dateFormatted, this.date)
     }
   },
 
@@ -55,6 +56,6 @@ export default {
       const [month, day, year] = date.split('/')
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     }
-  }
+  },
 }
 </script>

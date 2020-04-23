@@ -103,7 +103,7 @@ export default class Profile extends Vue {
       iron: '8%'
     },
      {
-      name: 'Cupcake',
+      name: 'Cupcdake',
       calories: 305,
       fat: 3.7,
       carbs: 67,

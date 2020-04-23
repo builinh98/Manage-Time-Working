@@ -19,7 +19,7 @@
                   <v-text-field v-model="fullname" label="Full Name" disabled></v-text-field>
                 </v-row>
                 <v-row >
-                  <FileInput />
+                  <FileInput @change-avatar="changeAvatar"/>
                 </v-row>
                 <v-row>
                   <v-avatar size="90">
@@ -29,7 +29,7 @@
               </v-col>
               <v-col cols="5" md="5">
                 <v-row >
-                  <Datepicker />
+                  <Datepicker @change-dob="changeDateOfBirth"/>
                 </v-row>
                 <v-row >
                   <v-radio-group v-model="radios" row>
@@ -70,10 +70,21 @@ import FileInput from '@/components/FileInput.vue'
 export default class Profile extends Vue {
   firstname: string = ''
   lastname: string = ''
+  dob: string = ''
   radios: string = 'male'
+  position: Array<string> = []
+  avatar: string = ''
 
   get fullname(): string {
     return this.firstname + ' ' + this.lastname
+  }
+
+  changeDateOfBirth(dobFormated: string, dob: string){
+    this.dob = dob
+  }
+
+  changeAvatar(avatar: string){
+    this.avatar = avatar
   }
 }
 </script>

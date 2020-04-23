@@ -62,12 +62,24 @@ export default {
     items: [
       { header: 'Select an option or create one' },
       {
-        text: 'Foo',
+        text: 'Developer',
         color: 'blue'
       },
       {
-        text: 'Bar',
+        text: 'CEO',
         color: 'red'
+      },
+      {
+        text: 'PM',
+        color: 'purple'
+      },
+      {
+        text: 'HR',
+        color: 'indigo'
+      },
+      {
+        text: 'Intern',
+        color: 'cyan'
       }
     ],
     nonce: 1,
@@ -82,7 +94,6 @@ export default {
     search: null,
     y: 0
   }),
-
   watch: {
     model(val, prev) {
       if (val.length === prev.length) return

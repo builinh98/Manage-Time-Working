@@ -6,8 +6,9 @@
       <span class="font-weight-light">Working</span>
     </span>
     <v-spacer />
-    <v-avatar>
-      <v-icon size="60">mdi-account-circle</v-icon>
+    <v-avatar size="30">
+      <!-- <v-icon size="60">mdi-account-circle</v-icon> -->
+      <v-icon size="30">mdi-account-switch</v-icon>
     </v-avatar>
   </v-app-bar>
 </template>
