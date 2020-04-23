@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCheckinDto } from './dto/create-checkin.dto';
 import { Checkin } from './checkin.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class CheckinsService {
@@ -12,8 +13,9 @@ export class CheckinsService {
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  create(createCheckinDto: CreateCheckinDto): Promise<Checkin> {
+  create(user: User, createCheckinDto: CreateCheckinDto): Promise<Checkin> {
     const checkin = new Checkin();
+    checkin.author = user;
     return this.checkinsRepository.save(checkin);
   }
 
@@ -26,9 +28,9 @@ export class CheckinsService {
   }
 
   // error
-  async findByDay(day: string): Promise<Checkin> {
-    return this.checkinsRepository.find(day);
-  }
+  // async findByDay(day: string): Promise<Checkin> {
+  //   return this.checkinsRepository.find(day);
+  // }
 
   async remove(id: string): Promise<void> {
     await this.checkinsRepository.delete(id);

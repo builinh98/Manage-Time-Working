@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity('checkins')
@@ -10,7 +10,7 @@ export class Checkin {
   timestamp: Date;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToOne(type => User, { cascade: true })
+  @ManyToOne(type => User, author => author.checkins)
   @JoinColumn({name: "user_id"})
-  user: User;
+  author: User;
 }

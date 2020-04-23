@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Request } from '../requests/request.entity';
 
@@ -17,12 +17,12 @@ export class Response {
   confirmed_at: Date;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToOne(type => User)
-  @JoinColumn()
-  user: Request;
+  @OneToOne(type => Request)
+  @JoinColumn({name: "request_id"})
+  request: Request;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToOne(type => Request)
+  @ManyToOne(type => User, author => author.responses)
   @JoinColumn({name: "user_id"})
-  request: Request;
+  author: User;
 }

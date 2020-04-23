@@ -2,5 +2,4 @@
 
 export class CreateCheckinDto {
   readonly timestamp: Date;
-
 }

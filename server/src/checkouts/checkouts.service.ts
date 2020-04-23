@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
 import { Checkout } from './checkout.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class CheckoutsService{
@@ -12,8 +13,9 @@ export class CheckoutsService{
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  create(createCheckoutDto: CreateCheckoutDto): Promise<Checkout> {
+  create(user: User, createCheckoutDto: CreateCheckoutDto): Promise<Checkout> {
     const checkout = new Checkout();
+    checkout.author = user;
     return this.checkoutsRepository.save(checkout);
   }
 

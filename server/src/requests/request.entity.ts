@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity('requests')
@@ -19,7 +19,7 @@ export class Request {
   created_at: Date;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToOne(type => User)
+  @ManyToOne(type => User, author => author.requests)
   @JoinColumn({name: "user_id"})
-  user: User;
+  author: User;
 }

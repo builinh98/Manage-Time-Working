@@ -1,6 +1,11 @@
-import { 
-  Entity, PrimaryGeneratedColumn, Column, JoinTable, 
-  JoinColumn, ManyToMany, ManyToOne, OneToMany , BeforeInsert
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  BeforeInsert,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { classToPlain } from 'class-transformer';
@@ -8,6 +13,11 @@ import { classToPlain } from 'class-transformer';
 import { UserResponse } from './interfaces/user.interface';
 import { Role } from '../roles/role.entity';
 import { Position } from '../positions/position.entity';
+import { Log } from '../logs/log.entity';
+import { Checkin } from '../checkins/checkin.entity';
+import { Checkout } from '../checkouts/checkout.entity';
+import { Request } from './../requests/request.entity';
+import { Response } from './../responses/response.entity';
 
 @Entity('users')
 export class User {
@@ -35,47 +45,80 @@ export class User {
   @Column({ default: 1 })
   active: number;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dob: Date;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP", name: "created_at"})
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'created_at',
+  })
   created_at: Date;
+
+  @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Log,
+    log => log.author,
+  )
+  logs: Log[];
+
+  @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Checkin,
+    checkin => checkin.author,
+  )
+  checkins: Checkin[];
+
+  @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Checkout,
+    checkout => checkout.author,
+  )
+  checkouts: Checkout[];
+
+  @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Request,
+    request => request.author,
+  )
+  requests: Request[];
+
+  @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type => Response,
+    response => response.author,
+  )
+  responses: Response[];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToMany(type => Role, { cascade: true, eager: true })
-  @JoinTable(
-    {
-    name: "users_roles", 
+  @JoinTable({
+    name: 'users_roles',
     joinColumn: {
-        name: "user_id",
-        referencedColumnName: "id"
+      name: 'user_id',
+      referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-        name: "role_id",
-        referencedColumnName: "id"
-    }
-  }
-  )
+      name: 'role_id',
+      referencedColumnName: 'id',
+    },
+  })
   roles: Role[];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToMany(type => Position, { cascade: true, eager: true })
-  @JoinTable(
-  {
-    name: "users_positions", 
+  @JoinTable({
+    name: 'users_positions',
     joinColumn: {
-        name: "user_id",
-        referencedColumnName: "id"
+      name: 'user_id',
+      referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-        name: "position_id",
-        referencedColumnName: "id"
-    }
-  }
-  )
+      name: 'position_id',
+      referencedColumnName: 'id',
+    },
+  })
   positions: Position[];
-
-
 
   @BeforeInsert()
   async hashPassword() {

@@ -5,8 +5,9 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { CheckinsModule } from './checkins/checkins.module';
 import { CheckoutsModule } from './checkouts/checkouts.module';
-// import { RequestsModule } from './requests/requests.module';
-// import { ResponsesModule } from './responses/responses.module';
+import { LogsModule } from './logs/logs.module';
+import { RequestsModule } from './requests/requests.module';
+import { ResponsesModule } from './responses/responses.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -25,8 +26,9 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     CheckinsModule,
     CheckoutsModule,
-    // RequestsModule,
-    // ResponsesModule,
+    LogsModule,
+    RequestsModule,
+    ResponsesModule,
   ],
   controllers: [AppController],
   providers: [AppService]
