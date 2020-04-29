@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +10,8 @@ import { LogsModule } from './logs/logs.module';
 import { RequestsModule } from './requests/requests.module';
 import { ResponsesModule } from './responses/responses.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 @Module({
   imports: [
@@ -29,9 +32,16 @@ import { AuthModule } from './auth/auth.module';
     LogsModule,
     RequestsModule,
     ResponsesModule,
+    AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TimeoutInterceptor,
+    },
+  ],
 })
 
 export class AppModule {}

@@ -1,6 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Res,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from 'src/utils/file-upload.utils';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from '../decorators/roles.decorator';
+import { UserDecorator } from './../decorators/user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
@@ -33,5 +48,31 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.usersService.remove(id);
+  }
+
+  @Post('/avatar')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFileName
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadedAvatar(@UploadedFile() image, @UserDecorator('id') userId: number) {
+    try{
+      await this.usersService.uploadAvatar(userId, image.filename);
+      return 'Success';
+    }catch(err){
+      return 'Failed'
+    }
+  }
+
+  @Get(':id/avatar')
+  async getAvatar(@Res() res, @Param('id') id: string) {
+    const user = await this.usersService.findOne(id)
+    console.log("fsfsd", user.avatar)
+    return res.sendFile(user.avatar, { root: './uploads' });
   }
 }
