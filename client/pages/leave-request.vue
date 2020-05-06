@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="grey lighten-4 fill-height">
     <v-row class="white no-gutters mb-4">
-      <Breadcumb title />
+      <Breadcumb :items="items" />
     </v-row>
     <v-row align="center" justify="center" class="fill-height no-gutters mt-n7">
       <v-col cols="12">
@@ -10,22 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-simple-table height="340">
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">Name</th>
-                    <th class="text-left">Calories</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in desserts" :key="item.name">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.calories }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
+            <Table :headers="headers" :bodys="bodys" />
             <br />
             <Pagination />
           </v-col>
@@ -39,78 +24,59 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import Breadcumb from '@/components/Breadcumb.vue'
 import Toolbar from '@/components/Toolbar.vue'
 import Pagination from '@/components/Pagination.vue'
+import Table from '@/components/Table.vue'
 
 @Component({
   components: {
     Breadcumb,
     Toolbar,
-    Pagination
+    Pagination,
+    Table
   }
 })
 export default class Profile extends Vue {
-  headers: Array<Object> = [
+  items: Array<Object> = [
     {
-      text: 'Dessert (100g serving)',
-      align: 'start',
-      sortable: false,
-      value: 'name'
-    },
-    { text: 'Calories', value: 'calories' },
-    { text: 'Fat (g)', value: 'fat' },
-    { text: 'Carbs (g)', value: 'carbs' },
-    { text: 'Protein (g)', value: 'protein' },
-    { text: 'Iron (%)', value: 'iron' }
+      text: 'Leave Request',
+      disabled: false,
+      href: 'leave-request'
+    }
   ]
-  desserts: Array<Object> = [
+  // headers: Array<Object> = []
+  // bodys: Array<Object> = []
+
+  headers: Array<Object> = [
+    { text: 'STT', value: 'stt' },
+    { text: 'Absent day', value: 'absent' },
+    { text: 'Hours', value: 'hours' }
+  ]
+
+  bodys: Array<Object> = [
     {
-      name: 'Frozen Yogurt',
-      calories: 159,
-      fat: 6.0,
-      carbs: 24,
-      protein: 4.0,
-      iron: '1%'
-    },
-    {
-      name: 'Ice cream sandwich',
-      calories: 237,
-      fat: 9.0,
-      carbs: 37,
-      protein: 4.3,
-      iron: '1%'
+      stt: 1,
+      absent: '04/05/2020',
+      hours: 34
     },
     {
-      name: 'Eclair',
-      calories: 262,
-      fat: 16.0,
-      carbs: 23,
-      protein: 6.0,
-      iron: '7%'
+      stt: 2,
+      absent: '05/05/2020',
+      hours: 23
     },
     {
-      name: 'Cupcake',
-      calories: 305,
-      fat: 3.7,
-      carbs: 67,
-      protein: 4.3,
-      iron: '8%'
+      stt: 3,
+      absent: '06/05/2020',
+      hours: 3
     },
-     {
-      name: 'Cupcake',
-      calories: 305,
-      fat: 3.7,
-      carbs: 67,
-      protein: 4.3,
-      iron: '8%'
+    {
+      stt: 4,
+      absent: '07/05/2020',
+      hours: 5
     },
-     {
-      name: 'Cupdcake',
-      calories: 305,
-      fat: 3.7,
-      carbs: 67,
-      protein: 4.3,
-      iron: '8%'
+    {
+      stt: 5,
+      absent: '07/05/2020',
+      hours: 6
     }
   ]
 }
 </script>
-

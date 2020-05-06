@@ -8,11 +8,14 @@
   ></v-file-input>
 </template>
 <script>
-  export default {
-    data: () => ({
-      rules: [
-        value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
-      ],
-    }),
-  }
+export default {
+  data: () => ({
+    rules: [
+      (value) =>
+        !value ||
+        value.size < 2000000 ||
+        'Avatar size should be less than 2 MB!'
+    ]
+  })
+}
 </script>

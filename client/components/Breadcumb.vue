@@ -2,16 +2,10 @@
   <v-breadcrumbs :items="items" large></v-breadcrumbs>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class Breadcumd extends Vue {
-  items: Array<Object> = [
-    {
-      text: 'Dashboard',
-      disabled: false,
-      href: 'index'
-    }
-  ]
+  @Prop({ required: true }) readonly items!: Array<object>
 }
 </script>

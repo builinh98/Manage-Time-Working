@@ -1,51 +1,37 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "manage time working client",
+  "description": "Manage Time Working",
   "author": "linhbui98",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "generate": "nuxt-ts generate",
+    "start": "nuxt-ts start",
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore ."
   },
-  "lint-staged": {
-    "*.{js,vue}": "npm run lint",
-    "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
-    "@nuxtjs/auth": "^4.9.0",
+    "@nuxt/typescript-runtime": "^0.4.0",
+    "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.0",
-    "@nuxtjs/pwa": "^3.0.0-0",
-    "cookieparser": "^0.1.0",
-    "js-cookie": "^2.2.1",
-    "material-design-icons-iconfont": "^5.0.1",
+    "@types/nuxtjs__auth": "^4.8.4",
     "nuxt": "^2.0.0",
-    "nuxt-property-decorator": "^2.5.1"
+    "nuxt-property-decorator": "^2.5.1",
+    "material-design-icons-iconfont": "^5.0.1"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.5",
+    "@nuxtjs/eslint-config-typescript": "^1.0.2",
     "@nuxtjs/eslint-module": "^1.0.0",
-    "@nuxtjs/stylelint-module": "^3.1.0",
-    "@nuxtjs/vuetify": "^1.11.0",
-    "@types/nuxtjs__auth": "^4.8.4",
+    "@nuxtjs/vuetify": "^1.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^4.0.0",
-    "lint-staged": "^10.0.0",
     "prettier": "^1.19.1",
-    "stylelint": "^10.1.0",
     "vuex-module-decorators": "^0.16.1"
   }
 }

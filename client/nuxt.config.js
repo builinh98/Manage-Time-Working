@@ -30,44 +30,35 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/axios-accessor'],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify',
-    '@nuxt/typescript-build'
-  ],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/vuetify'],
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv',
-    '@nuxtjs/auth'
+    '@nuxtjs/dotenv'
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {
-    baseURL: 'http://127.0.0.1:8080'
-  },
-
+  axios: { baseURL: 'http://127.0.0.1:8080' },
+  /*
+   ** Axios module configuration
+   */
   auth: {
     strategies: {
       local: {
         endpoints: {
           login: { url: 'auth/login', method: 'post', propertyName: 'token' },
-          logout: false,
-          user: { url: '/user', method: 'get', propertyName: 'user' },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get', propertyName: 'user' },
           tokenRequired: true,
           tokenType: 'Bearer'
         }
@@ -102,6 +93,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     extend(config, ctx) {}
   }
 }

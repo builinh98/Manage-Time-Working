@@ -43,9 +43,13 @@ export default class LoginForm extends Vue {
   // usernameRules: Array = ''
   // passwordRules: Array = ''
 
-  login(){
-
+  async login() {
+    try {
+      let response = await this.$auth.loginWith('local', { data: {username: this.username, password: this.password} })
+      console.log(response)
+    } catch (err) {
+      console.log(err)
+    }
   }
-
 }
 </script>

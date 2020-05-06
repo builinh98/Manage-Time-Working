@@ -1,6 +1,6 @@
 # client
 
-> manage time working client
+> Manage Time Working
 
 ## Build Setup
 
