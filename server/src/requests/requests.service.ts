@@ -22,12 +22,27 @@ export class RequestsService {
     return this.requestsRepository.save(request);
   }
 
-  async findAll(): Promise<Request[]> {
-    return this.requestsRepository.find();
+  async findAll(
+    user: User,
+    page: number | 1,
+    newest?: boolean
+  ): Promise<Request[]> {
+    const requests = await this.requestsRepository.find({
+      where: { author: user },
+      relations: ['author'],
+      take: 5,
+      skip: 5 * (page - 1),
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      order: newest && { created_at: 'DESC' },
+    });
+    return requests;
   }
 
   async findOne(id: string): Promise<Request> {
-    return this.requestsRepository.findOne(id);
+    return this.requestsRepository.findOne({
+      where: { id: id },
+      relations: ['author']
+    });
   }
 
   async remove(id: string): Promise<void> {

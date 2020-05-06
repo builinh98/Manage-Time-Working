@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserDecorator } from './../decorators/user.decorator';
 import { Roles } from '../decorators/roles.decorator';
@@ -29,6 +29,13 @@ export class ResponsesController{
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Response> {
     return this.responsesService.findOne(id);
+  }
+
+  @Roles('admin')
+  @Get('mail/sendmail')
+  sendMail(@UserDecorator() user: User, @Res() res): any {
+    // res.send(user)
+    return this.responsesService.example();
   }
 
 }

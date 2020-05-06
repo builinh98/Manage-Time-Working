@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserDecorator } from './../decorators/user.decorator';
 import { Roles } from '../decorators/roles.decorator';
@@ -19,8 +19,8 @@ export class RequestsController{
   }
 
   @Get()
-  findAll(): Promise<Request[]> {
-    return this.requestsService.findAll();
+  findAll(@UserDecorator() user: User, @Query('page') page: number): Promise<Request[]> {
+    return this.requestsService.findAll(user, page);
   }
 
   @Get(':id')

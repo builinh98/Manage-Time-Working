@@ -24,6 +24,19 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
+  async update(id: number, createUserDto: CreateUserDto): Promise<User> {
+    let user = new User()
+    user = await this.usersRepository.findOne(id);
+    if(!user) {
+      throw new NotFoundException('Not found to update');
+    }
+    await this.usersRepository.update({ id }, createUserDto);
+    user = await this.usersRepository.findOne({
+      where: { id },
+    });
+    return user;
+  }
+  
   async uploadAvatar(id: number, avatar: string){
     await this.usersRepository.update(id, {avatar: avatar});
     const user = await this.usersRepository.findOne({ id });
@@ -35,10 +48,16 @@ export class UsersService {
   }
 
   findOne(id: string): Promise<User> {
-    return this.usersRepository.findOne(id);
+    return this.usersRepository.findOne({
+      where: { id: id }
+    });
   }
 
   async remove(id: string): Promise<void> {
+    const user = await this.usersRepository.findOne(id);
+    if(!user) {
+      throw new NotFoundException('Not found to delete');
+    }
     await this.usersRepository.delete(id);
   }
 

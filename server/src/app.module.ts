@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HandlebarsAdapter, MailerModule } from '@nestjs-modules/mailer';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -24,6 +25,32 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
       database: process.env.DATABASE_DB,
       synchronize: true,
       entities: ['dist/**/*.entity.js'],
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        tls: {
+          ciphers: 'SSLv3',
+        },
+        secure: true, // true for 465, false for other ports
+        auth: {
+          user: process.env.EMAIL_ID, // generated ethereal user
+          pass: process.env.EMAIL_PASS, // generated ethereal password
+        },
+        logger: true,
+        debug: true 
+      },
+      defaults: {
+        from:'"Linh Bui" <linhbq.intern@gmail.com>',
+      },
+      template: {
+        dir: process.cwd() + '/template/',
+        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+        options: {
+          strict: true,
+        },
+      },
     }),
     AuthModule,
     UsersModule,

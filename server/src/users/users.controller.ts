@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Res,
   UseInterceptors,
   UploadedFile,
@@ -30,6 +31,14 @@ export class UsersController {
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id') id: number,
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<User> {
+    return this.usersService.update(id, createUserDto);
   }
 
   @Roles('admin')
