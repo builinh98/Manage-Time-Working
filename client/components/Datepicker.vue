@@ -10,8 +10,6 @@
     <template v-slot:activator="{ on }">
       <v-text-field
         v-model="computedDateFormatted"
-        label="Dob"
-        hint="MM/DD/YYYY"
         persistent-hint
         prepend-icon="event"
         readonly

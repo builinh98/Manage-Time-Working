@@ -160,12 +160,12 @@ import { $axios } from '~/utils/api'
 })
 export default class UserModule extends VuexModule {
   public token: string = ''
-  public username: string = ''
-  public firstname: string = ''
-  public lastname: string = ''
+  public username: string = 'linhbq.intern@gmail.com'
+  public firstname: string = 'Bùi'
+  public lastname: string = 'Quang Linh'
   public avatar: string = ''
-  public roles: string[] = []
-  public positions: string[] = []
+  public roles: string[] = ['admin','user']
+  public positions: string[] = ['dev']
 
   @Mutation
   private SET_TOKEN(token: string) {

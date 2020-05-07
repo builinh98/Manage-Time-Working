@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <Table :headers="headers" :bodys="bodys" />
+            <Table :headers="headers" :bodys="data" :site="site"/>
             <br />
             <Pagination />
           </v-col>
@@ -25,6 +25,14 @@ import Breadcumb from '@/components/Breadcumb.vue'
 import Toolbar from '@/components/Toolbar.vue'
 import Pagination from '@/components/Pagination.vue'
 import Table from '@/components/Table.vue'
+import moment from 'moment'
+import { $axios } from '../utils/api'
+
+interface DisplayData {
+  stt: number
+  absent: string
+  hours: string
+}
 
 @Component({
   components: {
@@ -34,7 +42,8 @@ import Table from '@/components/Table.vue'
     Table
   }
 })
-export default class Profile extends Vue {
+export default class LeaveRequest extends Vue {
+  site: string = 'leaverequest'
   items: Array<Object> = [
     {
       text: 'Leave Request',
@@ -51,32 +60,24 @@ export default class Profile extends Vue {
     { text: 'Hours', value: 'hours' }
   ]
 
-  bodys: Array<Object> = [
-    {
-      stt: 1,
-      absent: '04/05/2020',
-      hours: 34
-    },
-    {
-      stt: 2,
-      absent: '05/05/2020',
-      hours: 23
-    },
-    {
-      stt: 3,
-      absent: '06/05/2020',
-      hours: 3
-    },
-    {
-      stt: 4,
-      absent: '07/05/2020',
-      hours: 5
-    },
-    {
-      stt: 5,
-      absent: '07/05/2020',
-      hours: 6
-    }
-  ]
+  data: Array<Object> = []
+
+  async created() {
+    $axios.setToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg4NTkyODM3LCJleHAiOjE1ODg5NTI4Mzd9.wOipnKndHxv7HHG6Q040i1h-9KBJcY_MxNLOFHmIFlQ',
+      'Bearer'
+    )
+    const {data} = await $axios.get(`checkins`)
+    // this.data = data.map((action, index) => {
+    //   const displayData: DisplayData = {
+    //     stt: index + 1,
+    //     admin: action.user_id,
+    //     action: action.action,
+    //     timestamp: moment(action.timestamp).format('DD/MM/YYYY hh:mm:ss'),
+    //     changeInfo: action.changeInfo
+    //   }
+    //   return displayData
+    // })
+  }
 }
 </script>

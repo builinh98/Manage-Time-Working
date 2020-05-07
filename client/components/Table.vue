@@ -9,11 +9,14 @@
       <tbody>
         <tr v-for="(item, index) in bodys" :key="index">
           <td v-for="(val, key) in item" :key="key">
-            <v-icon v-if="val === 'edit'" size="30" @click="editUser"
+            <v-icon v-if="val === 'edit'" size="30" @click="editData"
               >mdi-table-edit</v-icon
             >
-            <v-icon v-else-if="val === 'delete'" size="30" @click="deleteUser"
+            <v-icon v-else-if="val === 'delete'" size="30"  @click="deleteData"
               >mdi-delete</v-icon
+            >
+            <v-icon v-else-if="val === 'export'" size="25" @click="exportData"
+              >mdi-export</v-icon
             >
             <span v-else>{{ val }}</span>
           </td>
@@ -29,14 +32,21 @@ import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator'
 export default class Breadcumd extends Vue {
   @Prop({ required: true }) readonly headers!: Array<object>
   @Prop({ required: true }) readonly bodys!: Array<object>
+  @Prop({ required: true }) readonly site!: string
 
-  editUser() {
-    alert('edit user')
+  @Emit('delete-data')
+  deleteData() {
+    return this.site
   }
 
-  @Emit('delete-confirm')
-  deleteUser(dialog: boolean) {
-    console.log(dialog)
+  @Emit('edit-data')
+  editData() {
+    return this.site
+  }
+
+  @Emit('export-data')
+  exportData(){
+     alert('export')
   }
 }
 </script>

@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <Table :headers="headers" :bodys="bodys" />
+            <Table :headers="headers" :bodys="data" :site="site"/>
             <br />
             <Pagination />
           </v-col>
@@ -25,6 +25,16 @@ import Breadcumb from '@/components/Breadcumb.vue'
 import Toolbar from '@/components/Toolbar.vue'
 import Pagination from '@/components/Pagination.vue'
 import Table from '@/components/Table.vue'
+import moment from 'moment'
+import { $axios } from '../utils/api'
+
+interface DisplayData {
+  stt: number
+  admin: string
+  action: string
+  timestamp: string
+  changeInfo: string
+}
 
 @Component({
   components: {
@@ -34,7 +44,8 @@ import Table from '@/components/Table.vue'
     Table
   }
 })
-export default class Profile extends Vue {
+export default class LogAction extends Vue {
+  site: string = 'logaction'
   items: Array<Object> = [
     {
       text: 'Log Action',
@@ -53,35 +64,24 @@ export default class Profile extends Vue {
     { text: 'Changed Information', value: 'changeInfo' }
   ]
 
-  bodys: Array<Object> = [
-    {
-      stt: 1,
-      admin: 'linh',
-      action: 'xoa user',
-      timestamp: 2442423423423,
-      changeinfo: 'fsdf'
-    },
-    {
-      stt: 2,
-      admin: 'huy',
-      action: 'them user',
-      timestamp: 25543423423423,
-      changeinfo: 'fsdf'
-    },
-    {
-      stt: 3,
-      admin: 'huy',
-      action: 'sua user',
-      timestamp: 5354323423423,
-      changeinfo: 'fsdf'
-    },
-    {
-      stt: 4,
-      admin: 'linh',
-      action: 'xoa user',
-      timestamp: 2442423423423,
-      changeinfo: 'fsdf'
-    }
-  ]
+  data: Array<Object> = []
+
+   async created() {
+    $axios.setToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg4NTkyODM3LCJleHAiOjE1ODg5NTI4Mzd9.wOipnKndHxv7HHG6Q040i1h-9KBJcY_MxNLOFHmIFlQ',
+      'Bearer'
+    )
+    const { data } = await $axios.get(`logs`)
+    this.data = data.map((action, index) => {
+      const displayData: DisplayData = {
+        stt: index + 1,
+        admin: action.user_id,
+        action: action.action,
+        timestamp: moment(action.timestamp).format('DD/MM/YYYY hh:mm:ss'),
+        changeInfo: action.changeInfo
+      }
+      return displayData
+    })
+  }
 }
 </script>

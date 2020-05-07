@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <Table :headers="headers" :bodys="bodys" />
+            <Table :headers="headers" :bodys="bodys" :site="site" />
             <br />
             <Pagination />
           </v-col>
@@ -34,7 +34,8 @@ import Table from '@/components/Table.vue'
     Table
   }
 })
-export default class Profile extends Vue {
+export default class Dashboard extends Vue {
+  site: string = 'dashboard'
   items: Array<Object> = [
     {
       text: 'Dashboard',
@@ -61,7 +62,7 @@ export default class Profile extends Vue {
       working: 100,
       leave: 10,
       absent: 3,
-      export: 'fsfds'
+      export: 'export'
     },
     {
       stt: 2,
@@ -69,7 +70,7 @@ export default class Profile extends Vue {
       working: 200,
       leave: 100,
       absent: 10,
-      export: 'fsfds'
+      export: 'export'
     }
   ]
 

@@ -6,11 +6,13 @@
     <v-row align="center" justify="center" class="fill-height no-gutters mt-n7">
       <v-col cols="12">
         <v-row class="no-gutters">
-          <Toolbar />
+          <!-- <Toolbar /> -->
+          <v-btn>Check-in</v-btn>
+          <v-btn>Check-out</v-btn>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <Table :headers="headers" :bodys="bodys" />
+            <Table :headers="headers" :bodys="data" :site="site" />
             <br />
             <Pagination />
           </v-col>
@@ -25,6 +27,15 @@ import Breadcumb from '@/components/Breadcumb.vue'
 import Toolbar from '@/components/Toolbar.vue'
 import Pagination from '@/components/Pagination.vue'
 import Table from '@/components/Table.vue'
+import moment from 'moment'
+import { $axios } from '../utils/api'
+
+interface DisplayData {
+  stt: number
+  date: string
+  checkin: string
+  checkout: string
+}
 
 @Component({
   components: {
@@ -34,9 +45,8 @@ import Table from '@/components/Table.vue'
     Table
   }
 })
-export default class Profile extends Vue {
-  // headers: Array<Object> = []
-  // bodys: Array<Object> = []
+export default class MyTimeWorking extends Vue {
+  site: string = 'mytime'
   items: Array<Object> = [
     {
       text: 'My Time Working',
@@ -52,37 +62,45 @@ export default class Profile extends Vue {
     { text: 'Checkout', value: 'checkouts' }
   ]
 
-  bodys: Array<Object> = [
-    {
-      stt: 1,
-      date: '04/05/2020',
-      checkins: 6.0,
-      checkouts: 24
-    },
-    {
-      stt: 2,
-      date: '05/05/2020',
-      checkins: 6.0,
-      checkouts: 24
-    },
-    {
-      stt: 3,
-      date: '06/05/2020',
-      checkins: 6.0,
-      checkouts: 24
-    },
-    {
-      stt: 4,
-      date: '07/05/2020',
-      checkins: 6.0,
-      checkouts: 24
-    },
-    {
-      stt: 5,
-      date: '07/05/2020',
-      checkins: 6.0,
-      checkouts: 24
-    }
-  ]
+  data: Array<Object> = []
+
+  public mergeByDate(checkins, checkouts): Array<any> {
+    let data = checkins.map((checkin) => ({
+      ...checkin,
+      ...checkouts.find(
+        (checkout) => checkout.date === checkin.date && checkout
+      )
+    }))
+    return data
+  }
+
+  async created() {
+    $axios.setToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg4NTkyODM3LCJleHAiOjE1ODg5NTI4Mzd9.wOipnKndHxv7HHG6Q040i1h-9KBJcY_MxNLOFHmIFlQ',
+      'Bearer'
+    )
+    const resCheckins = await $axios.get(`checkins`)
+    const resCheckouts = await $axios.get(`checkouts`)
+    const checkins = resCheckins.data.map((checkin) => {
+      checkin.date = moment(checkin.timestamp).format('DD/MM/YYYY')
+      checkin.checkin = moment(checkin.timestamp).format('hh:mm:ss')
+      return checkin
+    })
+    const checkouts = resCheckouts.data.map((checkout) => {
+      checkout.date = moment(checkout.timestamp).format('DD/MM/YYYY')
+      checkout.checkout = moment(checkout.timestamp).format('hh:mm:ss')
+      return checkout
+    })
+    console.log(checkins)
+    this.data = this.mergeByDate(checkins, checkouts).map((dt, index) => {
+      const displayData: DisplayData = {
+        stt: index + 1,
+        date: dt.date,
+        checkin: dt.checkin,
+        checkout: dt.checkout
+      }
+      return displayData
+    })
+  }
 }
 </script>
