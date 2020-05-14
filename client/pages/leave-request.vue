@@ -64,20 +64,18 @@ export default class LeaveRequest extends Vue {
 
   async created() {
     $axios.setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg4NTkyODM3LCJleHAiOjE1ODg5NTI4Mzd9.wOipnKndHxv7HHG6Q040i1h-9KBJcY_MxNLOFHmIFlQ',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg5MzM0OTEzLCJleHAiOjE1ODk2OTQ5MTN9.ew9IaIcd_3joFFNrz3PGhV4o0eL0GlwM_1PJCBWWsEQ',
       'Bearer'
     )
-    const {data} = await $axios.get(`checkins`)
-    // this.data = data.map((action, index) => {
-    //   const displayData: DisplayData = {
-    //     stt: index + 1,
-    //     admin: action.user_id,
-    //     action: action.action,
-    //     timestamp: moment(action.timestamp).format('DD/MM/YYYY hh:mm:ss'),
-    //     changeInfo: action.changeInfo
-    //   }
-    //   return displayData
-    // })
+    const {data} = await $axios.get(`leaves/absences`)
+    this.data = data.absences.map((absence, index) => {
+      const displayData: DisplayData = {
+        stt: index + 1,
+        absent: absence.date,
+        hours: absence.hours,
+      }
+      return displayData
+    })
   }
 }
 </script>

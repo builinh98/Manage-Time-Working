@@ -118,11 +118,11 @@ export default class LogUser extends Vue {
 
   async created() {
     $axios.setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg4NTkyODM3LCJleHAiOjE1ODg5NTI4Mzd9.wOipnKndHxv7HHG6Q040i1h-9KBJcY_MxNLOFHmIFlQ',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg5MzM0OTEzLCJleHAiOjE1ODk2OTQ5MTN9.ew9IaIcd_3joFFNrz3PGhV4o0eL0GlwM_1PJCBWWsEQ',
       'Bearer'
     )
-    const resCheckins = await $axios.get(`admins/checkins`)
-    const resCheckouts = await $axios.get(`admins/checkouts`)
+    const resCheckins = await $axios.get(`times/checkins`)
+    const resCheckouts = await $axios.get(`times/checkouts`)
     const checkins = resCheckins.data.map((checkin) => {
       checkin.date = moment(checkin.timestamp).format('DD/MM/YYYY')
       checkin.checkin = moment(checkin.timestamp).format('hh:mm:ss')

@@ -7,8 +7,8 @@
       <v-col cols="12">
         <v-row class="no-gutters">
           <!-- <Toolbar /> -->
-          <v-btn>Check-in</v-btn>
-          <v-btn>Check-out</v-btn>
+          <v-btn @click="checkin">Check-in</v-btn>
+          <v-btn @click="checkout">Check-out</v-btn>
         </v-row>
         <v-row>
           <v-col cols="12">
@@ -64,43 +64,54 @@ export default class MyTimeWorking extends Vue {
 
   data: Array<Object> = []
 
-  public mergeByDate(checkins, checkouts): Array<any> {
-    let data = checkins.map((checkin) => ({
-      ...checkin,
-      ...checkouts.find(
-        (checkout) => checkout.date === checkin.date && checkout
-      )
-    }))
-    return data
+  async checkin() {
+    const timestamp = new Date()
+    const checkin = await $axios.post(`times/checkins`, { timestamp })
+    console.log(checkin)
+    this.getData()
   }
 
-  async created() {
-    $axios.setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg4NTkyODM3LCJleHAiOjE1ODg5NTI4Mzd9.wOipnKndHxv7HHG6Q040i1h-9KBJcY_MxNLOFHmIFlQ',
-      'Bearer'
-    )
-    const resCheckins = await $axios.get(`checkins`)
-    const resCheckouts = await $axios.get(`checkouts`)
-    const checkins = resCheckins.data.map((checkin) => {
-      checkin.date = moment(checkin.timestamp).format('DD/MM/YYYY')
-      checkin.checkin = moment(checkin.timestamp).format('hh:mm:ss')
-      return checkin
-    })
-    const checkouts = resCheckouts.data.map((checkout) => {
-      checkout.date = moment(checkout.timestamp).format('DD/MM/YYYY')
-      checkout.checkout = moment(checkout.timestamp).format('hh:mm:ss')
-      return checkout
-    })
-    console.log(checkins)
-    this.data = this.mergeByDate(checkins, checkouts).map((dt, index) => {
+  async checkout() {
+    const timestamp = new Date()
+    const checkout = await $axios.post(`times/checkouts`, { timestamp })
+    this.getData()
+  }
+  
+  getCheckins() {
+    return $axios.get(`times/checkins`)
+  }
+
+  getCheckouts() {
+    return $axios.get(`times/checkouts`)
+  }
+  async getData() {
+    const resCheckins = await this.getCheckins()
+    const resCheckouts = await this.getCheckouts()
+    this.data = resCheckins.data.map((checkin, index) => {
+      const checkouts = resCheckouts.data.filter(checkout => {
+        return checkout.checkin && checkout.checkin.id === checkin.id
+      })
+     
+      const date = moment(checkin.timestamp).format('DD/MM/YYYY')
+      const timeCheckin = moment(checkin.timestamp).format('hh:mm:ss')
+      const timeCheckout = checkouts.length === 1 
+      ? moment(checkouts[0].timestamp).format('hh:mm:ss') : ''
       const displayData: DisplayData = {
         stt: index + 1,
-        date: dt.date,
-        checkin: dt.checkin,
-        checkout: dt.checkout
+        date: date,
+        checkin: timeCheckin,
+        checkout: timeCheckout
       }
       return displayData
     })
+  }
+
+  created() {
+    $axios.setToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg5MzM0OTEzLCJleHAiOjE1ODk2OTQ5MTN9.ew9IaIcd_3joFFNrz3PGhV4o0eL0GlwM_1PJCBWWsEQ',
+      'Bearer'
+    )
+    this.getData()
   }
 }
 </script>

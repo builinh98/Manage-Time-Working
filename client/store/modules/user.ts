@@ -199,7 +199,6 @@ export default class UserModule extends VuexModule {
 
   @Mutation
   public getUserInfo() {
-    console.log('fsdfsdfdsifhsdi')
     this.SET_USERNAME('linhbq')
     // if (this.token === '') {
     //   throw new Error('GetUserInfo: token is undefined!')
