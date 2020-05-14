@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
-import { Checkout } from './checkout.entity';
+import { Checkout } from 'src/times/checkout.entity';
 import { User } from '../users/user.entity';
 
 @Injectable()

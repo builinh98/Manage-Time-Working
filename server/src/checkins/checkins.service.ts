@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCheckinDto } from './dto/create-checkin.dto';
-import { Checkin } from './checkin.entity';
+import { Checkin } from 'src/times/checkin.entity';
 import { User } from '../users/user.entity';
 
 @Injectable()
@@ -46,7 +46,7 @@ export class CheckinsService {
   ): Promise<Checkin[]> {
     const checkins = await this.checkinsRepository.find({
       where: { author: user },
-      relations: ['author'],
+      relations: ['author', 'checkout'],
       take: 5,
       skip: 5 * (page - 1),
       order: newest && { timestamp: 'DESC' },

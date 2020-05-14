@@ -3,7 +3,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserDecorator } from './../decorators/user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateCheckinDto } from './dto/create-checkin.dto';
-import { Checkin } from './checkin.entity';
+import { Checkin } from 'src/times/checkin.entity';
 import { User } from '../users/user.entity';
 import { CheckinsService } from './checkins.service';
 import { NotFoundInterceptor } from 'src/common/interceptors/notfound.interceptor';
@@ -21,13 +21,11 @@ export class CheckinsController{
 
   @Get()
   findAllForUser(@UserDecorator() user: User, @Query('page') page: number): Promise<Checkin[]> {
-    console.log(user)
     return this.checkinsService.findAllForUser(user, page, true);
   }
 
   @Get(':id')
   findOne(@Param() params): Promise<Checkin> {
-    console.log("sdfsdfsdfsf",params)
     return this.checkinsService.findOne(params.id);
   }
 

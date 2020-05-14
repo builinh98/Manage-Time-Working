@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
 import { User } from 'src/users/user.entity';
-import { Request } from '../requests/request.entity';
+import { Request } from './request.entity';
 
 @Entity('responses')
 export class Response {

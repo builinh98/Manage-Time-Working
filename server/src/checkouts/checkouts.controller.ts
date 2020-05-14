@@ -3,7 +3,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserDecorator } from './../decorators/user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
-import { Checkout } from './checkout.entity';
+import { Checkout } from 'src/times/checkout.entity';
 import { User } from '../users/user.entity';
 import { CheckoutsService } from './checkouts.service';
 

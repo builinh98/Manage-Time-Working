@@ -12,7 +12,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { CreateCheckinDto } from './dto/create-checkin.dto';
-import { Checkin } from './checkin.entity';
+import { Checkin } from 'src/times/checkin.entity';
 import { CheckinsService } from './checkins.service';
 
 @Controller('admins/checkins')

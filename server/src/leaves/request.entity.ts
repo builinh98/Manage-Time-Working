@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
-import { User } from '../users/user.entity';
+import { User } from 'src/users/user.entity';
 
 @Entity('requests')
 export class Request {
@@ -8,7 +8,7 @@ export class Request {
 
   @Column({ length: 500, nullable: true })
   reason: string;
-
+  
   @Column({ default: 1 })
   status: number;
 

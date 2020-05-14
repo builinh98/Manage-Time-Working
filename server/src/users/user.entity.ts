@@ -14,8 +14,9 @@ import { UserResponse } from './interfaces/user.interface';
 import { Role } from '../roles/role.entity';
 import { Position } from '../positions/position.entity';
 import { Log } from '../logs/log.entity';
-import { Checkin } from '../checkins/checkin.entity';
-import { Checkout } from '../checkouts/checkout.entity';
+import { Checkin } from 'src/times/checkin.entity';
+import { Checkout } from 'src/times/checkout.entity';
+import { Check } from 'src/checks/check.entity';
 import { Request } from './../requests/request.entity';
 import { Response } from './../responses/response.entity';
 
@@ -61,6 +62,12 @@ export class User {
     log => log.author,
   )
   logs: Log[];
+
+  @OneToMany(
+    type => Check,
+    check => check.author,
+  )
+  checks: Check[];
 
   @OneToMany(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

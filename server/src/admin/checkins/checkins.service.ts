@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
 import { CreateCheckinDto } from './dto/create-checkin.dto';
-import { Checkin } from './checkin.entity';
+import { Checkin } from 'src/times/checkin.entity';
 
 @Injectable()
 export class CheckinsService {

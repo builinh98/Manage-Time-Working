@@ -12,6 +12,9 @@ import { RequestsModule } from './requests/requests.module';
 import { ResponsesModule } from './responses/responses.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
+import { TimesModule } from './times/times.module';
+import { LeavesModule } from './leaves/leaves.module';
+import { ChecksModule } from './checks/checks.module';
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 @Module({
@@ -38,8 +41,8 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
           user: process.env.EMAIL_ID, // generated ethereal user
           pass: process.env.EMAIL_PASS, // generated ethereal password
         },
-        logger: true,
-        debug: true 
+        // logger: true,
+        // debug: true 
       },
       defaults: {
         from:'"Linh Bui" <linhbq.intern@gmail.com>',
@@ -60,6 +63,9 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
     RequestsModule,
     ResponsesModule,
     AdminModule,
+    TimesModule,
+    LeavesModule,
+    ChecksModule
   ],
   controllers: [AppController],
   providers: [
