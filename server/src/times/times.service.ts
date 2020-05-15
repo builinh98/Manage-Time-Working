@@ -130,37 +130,85 @@ export class TimesService {
     await this.checkoutsRepository.delete(id);
   }
 
+  // get other info
   async getWorkingHoursForUser(
-    user: User
+    user: User,
+    month: string,
   ): Promise<WorkingResponse[]> {
-    const checkins = await this.checkinsRepository.find({
-      where: { author: user },
-      relations: ['author'],
-    });
+    const checkins = await this.checkinsRepository
+      .createQueryBuilder()
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere('MONTH(timestamp) = :month', { month: month })
+      .getMany();
 
-    const checkouts = await this.checkoutsRepository.find({
-      where: { author: user },
-      relations: ['author', 'checkin'],
-    });
+    const checkouts = await this.checkoutsRepository
+      .createQueryBuilder('checkout')
+      .leftJoinAndSelect('checkout.checkin', 'checkin')
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere('MONTH(checkin.timestamp) = :month', { month: month })
+      .getMany();
 
     const workings = checkins.map(checkin => {
       const checkout = checkouts.find(checkout => {
-        return checkout.checkin.id === checkin.id
-      })
-
-      console.log('fsfsd')
+        return checkout.checkin && checkout.checkin.id === checkin.id;
+      });
 
       let working = new WorkingResponse();
-      if(!checkout){
-        working.time = 0
-      }
-
-      const timeFrom = moment(checkin.timestamp);
-      const timeTo = moment(checkout.timestamp);
       working.date = checkin.timestamp;
-      working.time = moment.duration(timeTo.diff(timeFrom)).asHours();
+      if (!checkout) {
+        working.time = 0;
+      } else {
+        const timeTo = moment(checkout.timestamp);
+        const timeFrom = moment(checkin.timestamp);
+        working.time = Number(
+          moment
+            .duration(timeTo.diff(timeFrom))
+            .asHours()
+            .toFixed(2),
+        );
+      }
       return working;
-    })
+    });
+    return workings;
+  }
+
+  async getWorkingHoursForAdmin(
+    userId: string,
+    month: string
+  ): Promise<WorkingResponse[]> {
+    const checkins = await this.checkinsRepository
+      .createQueryBuilder()
+      .where('user_id = :userId', { userId: userId })
+      .andWhere('MONTH(timestamp) = :month', { month: month })
+      .getMany();
+
+    const checkouts = await this.checkoutsRepository
+      .createQueryBuilder('checkout')
+      .where('checkout.user_id = :userId', { userId: userId })
+      .leftJoinAndSelect('checkout.checkin', 'checkin')
+      .andWhere('MONTH(checkin.timestamp) = :month', { month: month })
+      .getMany();
+
+    const workings = checkins.map(checkin => {
+      const checkout = checkouts.find(checkout => {
+        return checkout.checkin && checkout.checkin.id === checkin.id;
+      });
+      let working = new WorkingResponse();
+      working.date = checkin.timestamp;
+      if (!checkout) {
+        working.time = 0;
+      } else {
+        const timeTo = moment(checkout.timestamp);
+        const timeFrom = moment(checkin.timestamp);
+        working.time = Number(
+          moment
+            .duration(timeTo.diff(timeFrom))
+            .asHours()
+            .toFixed(2),
+        );
+      }
+      return working;
+    });
     return workings;
   }
 }

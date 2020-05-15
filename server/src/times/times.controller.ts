@@ -60,7 +60,13 @@ export class TimesController {
   }
   
   @Get('workings')
-  getWorkingHoursForUser(@UserDecorator() user: User): Promise<WorkingResponse> {
-    return this.getWorkingHoursForUser(user)
+  getWorkingHoursForUser(@UserDecorator() user: User, @Query('month') month: string): Promise<WorkingResponse[]> {
+    return this.timesService.getWorkingHoursForUser(user, month)
   }
+
+  @Get('workings/:userId')
+  getWorkingHoursForAdmin(@Param('userId') userId: string, @Query('month') month: string): Promise<WorkingResponse[]> {
+    return this.timesService.getWorkingHoursForAdmin(userId, month)
+  }
+
 }
