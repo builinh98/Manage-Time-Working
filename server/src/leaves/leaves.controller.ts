@@ -78,14 +78,17 @@ export class LeavesController {
 
   // get list absence day
   @Get('absences')
-  getAbsenceDayForUser(@UserDecorator() user: User): Promise<LeavesResponse> {
-    return this.leavesService.getAbsenceDayForUser(user);
+  getAbsenceDayForUser(
+    @UserDecorator() user: User,
+    @Query('month') month: string,
+    @Query('year') year: string,
+  ): Promise<LeavesResponse> {
+    return this.leavesService.getAbsenceDayForUser(user, month, year);
   }
 
   // get absence day in month
-  @Get('absences/:month')
-  getAbsenceDayInMonthForUser(@UserDecorator() user: User, @Param() params) {
-    return this.leavesService.getAbsenceDayInMonthForUser(user, params.month);
-  }
-
+  // @Get('absences/:month')
+  // getAbsenceDayInMonthForUser(@UserDecorator() user: User, @Param() params) {
+  //   return this.leavesService.getAbsenceDayInMonthForUser(user, params.month);
+  // }
 }

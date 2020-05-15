@@ -7,7 +7,10 @@ import { CreateRequestDto } from './dto/create-request.dto';
 import { CreateResponseDto } from './dto/create-response.dto';
 import { Request } from './../requests/request.entity';
 import { Response } from './../responses/response.entity';
-import { AbsencesResponse, LeavesResponse } from './interfaces/leaves.interfaces';
+import {
+  AbsencesResponse,
+  LeavesResponse,
+} from './interfaces/leaves.interfaces';
 import { User } from '../users/user.entity';
 
 @Injectable()
@@ -27,6 +30,19 @@ export class LeavesService {
   ): Promise<Request> {
     const request = new Request();
     request.author = user;
+    const beforeTime = '08:30:00';
+    const afterTime = '17:30:00';
+    const from = moment(createRequestDto.start).format('HH:mm:ss');
+    const to = moment(createRequestDto.end).format('HH:mm:ss');
+    if (from < beforeTime || from > afterTime) {
+      throw new BadRequestException('err');
+    }
+    if (to < beforeTime || to > afterTime) {
+      throw new BadRequestException('err');
+    }
+    if (to < from) {
+      throw new BadRequestException('err');
+    }
     request.start = createRequestDto.start;
     request.end = createRequestDto.end;
     request.reason = createRequestDto.reason;
@@ -124,51 +140,65 @@ export class LeavesService {
   }
 
   // get list absence Day
-  async getAbsenceDayForUser(user: User): Promise<LeavesResponse> {
-    let requests = await this.requestsRepository.find({
-      where: { author: user, status: 2 },
-    });
+  async getAbsenceDayForUser(
+    user: User,
+    month: string,
+    year: string,
+  ): Promise<LeavesResponse> {
     let totalAbsence = 0;
-    const absences = requests.map(request => {
-      const absence = new AbsencesResponse();
+    const arrDate = [];
+    let requests = await this.requestsRepository
+      .createQueryBuilder()
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere('status = :status', { status: 2 })
+      .andWhere('MONTH(start) = :month', { month: month })
+      .andWhere('YEAR(start) = :year', { year: year })
+      .getMany();
+
+    requests.map(request => {
       const from = moment(request.start);
       const to = moment(request.end);
-      const diff = moment.duration(to.diff(from)).asHours();
-      const diffFormatedDay = moment.duration(to.diff(from)).asDays();
-      const condition = moment(request.end)
-      if(diffFormatedDay < 1){
-        totalAbsence = totalAbsence + 1;
+      if (from.format('HH:mm:ss') === to.format('HH:mm:ss')) {
+        this.dateRangeToUnit(request.start, request.end).map(date => {
+          arrDate.push({ ...request, start: date, end: date });
+        });
       } else {
-        totalAbsence = totalAbsence + Math.ceil(diffFormatedDay);
+        arrDate.push({ ...request });
       }
+    });
 
-      absence.date = `${from.format('DD/MM/YYYY')}-${to.format('DD/MM/YYYY')}`;
+    const absences = arrDate.map(date => {
+      totalAbsence = totalAbsence + 1;
+      const absence = new AbsencesResponse();
+      const from = moment(date.start);
+      const to = moment(date.end);
+      absence.date = `${from.format('DD/MM/YYYY')}`;
       absence.from = from.format('HH:mm:ss');
       absence.to = to.format('HH:mm:ss');
-      // absence.hours = (diff % 24) + 8 * Math.floor(diff / 24);
-      absence.hours = diff
-      let a = moment({h: 20, m: 12, s:35});
-      let b = moment({h: 20, m: 15, s: 23});
-      console.log(b.isAfter(a, 'seconds')); // true
+      if (from.format('HH:mm:ss') === to.format('HH:mm:ss')) {
+        absence.hours = 9;
+      } else {
+        const diff = moment.duration(to.diff(from)).asHours();
+        absence.hours = diff;
+      }
       return absence;
     });
     return { absences, totalAbsence};
   }
 
-  // get absence in month
-  async getAbsenceDayInMonthForUser(user: User, month: String) {
-    let requests = await this.requestsRepository.find({
-      where: { author: user, status: 2 },
-    });
-
-    let totalAbsence = 0;
-    requests.map(request => {
-      totalAbsence + 1;
-      const from = moment(request.start)
-      const to = moment(request.end)
-      const diff = moment.duration(to.diff(from)).asDays();
-    })
-   
-    return 9;
+  dateRangeToUnit(startDate: Date, endDate: Date) {
+    let datesInRange = [];
+    let currentDay = new Date(startDate);
+    const endDay = new Date(endDate);
+    while (moment(currentDay).isBefore(endDate)) {
+      datesInRange.push(new Date(currentDay));
+      currentDay = new Date(
+        moment(currentDay)
+          .add(1, 'days')
+          .format(),
+      );
+    }
+    datesInRange.push(new Date(endDay));
+    return datesInRange;
   }
 }
