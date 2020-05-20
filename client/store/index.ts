@@ -1,22 +1,21 @@
-// import Vue from 'vue'
 // import Vuex from 'vuex'
-// import { IUserState } from './modules/user'
+// import UserModule from './modules/user'
 
-// Vue.use(Vuex)
-
-// export interface IRootState {
-//   user: IUserState
+// export function createStore() {
+//   return new Vuex.Store({
+//     modules: {
+//       UserModule
+//     }
+//   })
 // }
-
-// // Declare empty store first, dynamically register all modules later.
-// export default new Vuex.Store<IRootState>({})
-import Vuex from 'vuex'
+import { getModule } from 'vuex-module-decorators'
+import { Store } from 'vuex';
 import UserModule from './modules/user'
 
-export function createStore() {
-  return new Vuex.Store({
-    modules: {
-      UserModule
-    }
-  })
+export let userModule : UserModule;
+
+function initializeStores(store: Store<any>): void {
+	userModule = getModule(UserModule, store);
 }
+
+export const plugins = [initializeStores];

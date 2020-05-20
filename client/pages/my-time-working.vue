@@ -43,7 +43,8 @@ interface DisplayData {
     Toolbar,
     Pagination,
     Table
-  }
+  },
+  middleware: ['auth']
 })
 export default class MyTimeWorking extends Vue {
   site: string = 'mytime'

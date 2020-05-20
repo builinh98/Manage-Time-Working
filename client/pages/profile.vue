@@ -67,7 +67,8 @@ import UserModule from '@/store/modules/user'
     Datepicker,
     MultiCombobox,
     FileInput
-  }
+  },
+  middleware: ['auth']
 })
 export default class Profile extends Vue {
   items: Array<Object> = [

@@ -61,7 +61,8 @@ interface DisplayData {
     AddUserModal,
     ConfirmModal,
     EditUserModal
-  }
+  },
+  middleware: ['auth']
 })
 export default class Users extends Vue {
   page: number = 1

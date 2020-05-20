@@ -42,28 +42,49 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    // Doc: https://github.com/nuxt-community/auth-module
+    '@nuxtjs/auth',
+    '@nuxtjs/toast'
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: { baseURL: 'http://127.0.0.1:8080' },
+  axios: { baseURL: 'http://localhost:8080/api' },
   /*
    ** Axios module configuration
    */
   auth: {
+    watchLoggedIn: true,
+    redirect: {
+      logout: '/login'
+    },
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'auth/login', method: 'post', propertyName: 'token' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get', propertyName: 'user' },
+          login: { url: 'auth/login', method: 'post', propertyName: false },
+          logout: { url: 'auth/logout', method: 'post' },
+          user: false,
           tokenRequired: true,
           tokenType: 'Bearer'
         }
       }
     }
+  },
+
+  toast: {
+    position: 'top-center',
+    register: [ // Register custom toasts
+      {
+        name: 'error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error',
+          duration: 1000
+        }
+      }
+    ]
   },
   /*
    ** vuetify module configuration
@@ -94,6 +115,6 @@ export default {
      ** You can extend webpack config here
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    extend(config, ctx) {}
+    extend(config, ctx) { }
   }
 }

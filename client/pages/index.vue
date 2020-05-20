@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <Table :headers="headers" :bodys="bodys" :site="site" />
+            <Table :headers="headers" :bodys="data" :site="site" />
             <br />
             <Pagination />
           </v-col>
@@ -25,6 +25,16 @@ import Breadcumb from '@/components/Breadcumb.vue'
 import Toolbar from '@/components/Toolbar.vue'
 import Pagination from '@/components/Pagination.vue'
 import Table from '@/components/Table.vue'
+import moment from 'moment'
+import { $axios } from '../utils/api'
+
+interface DisplayData {
+  stt: number
+  username: string
+  workings: string
+  leaves: string
+  absence: string
+}
 
 @Component({
   components: {
@@ -32,7 +42,8 @@ import Table from '@/components/Table.vue'
     Toolbar,
     Pagination,
     Table
-  }
+  },
+  middleware: ['auth']
 })
 export default class Dashboard extends Vue {
   site: string = 'dashboard'
@@ -55,7 +66,7 @@ export default class Dashboard extends Vue {
     { text: 'Export', value: 'export' }
   ]
 
-  bodys: Array<Object> = [
+  data: Array<Object> = [
     {
       stt: 1,
       username: 'linhbq.intern@gmail.com',
@@ -74,10 +85,31 @@ export default class Dashboard extends Vue {
     }
   ]
 
+    
+  getWorkings() {
+    return $axios.get(`times/workings?month=5`)
+  }
+
+  getLeaves() {
+    return $axios.get(`leaves/absences?month=5&year=2020`)
+  }
+  async getData() {
+    const resWorkings = await this.getWorkings()
+    const resLeaves = await this.getLeaves()
+    this.data = resWorkings.data.map((checkin, index) => {
+      const displayData: DisplayData = {
+        stt: index + 1,
+        username: '',
+        workings: '',
+        leaves: '',
+        absence: ''
+      }
+      return displayData
+    })
+  }
+
   created() {
-    // this.$axios.$get('http://localhost:8080/admins/checkins').then(
-    //   res => console.log(res)
-    // )
+    // this.getData()
   }
 }
 </script>

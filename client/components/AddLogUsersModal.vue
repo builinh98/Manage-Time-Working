@@ -25,7 +25,7 @@
                 </v-row>
                 <v-row>
                   <v-text-field
-                    v-model="firstname"
+                    v-model="lastname"
                     label="Check-out"
                     required
                     placeholder="hh:mm:ss"
@@ -64,7 +64,8 @@ import MultiCombobox from '@/components/MultiCombobox.vue'
 export default class Breadcumd extends Vue {
   items: Array<string> = ['Foo', 'Bar', 'Fizz', 'Buzz']
   dialog: boolean = false
-
+  firstname: string = ''
+  lastname: string = ''
   changeDate() {}
 }
 </script>

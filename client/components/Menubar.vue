@@ -12,8 +12,8 @@
           <v-col cols="7">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title>Bùi Quang Linh</v-list-item-title>
-                <v-list-item-subtitle>Intern</v-list-item-subtitle>
+                <v-list-item-title>{{}}</v-list-item-title>
+                <v-list-item-subtitle >{{}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-col>
@@ -36,7 +36,11 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class Menubar extends Vue {
-  drawer: boolean = true
+  drawer: boolean = false
+
+  // get fullname(): string {
+  //   return this.firstname + ' ' + this.lastname;
+  // }
   items: Array<Object> = [
     {
       icon: 'mdi-apps',

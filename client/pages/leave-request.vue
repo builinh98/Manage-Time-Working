@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <Table :headers="headers" :bodys="data" :site="site"/>
+            <Table :headers="headers" :bodys="data" :site="site" />
             <br />
             <Pagination />
           </v-col>
@@ -40,7 +40,8 @@ interface DisplayData {
     Toolbar,
     Pagination,
     Table
-  }
+  },
+  middleware: ['auth']
 })
 export default class LeaveRequest extends Vue {
   site: string = 'leaverequest'
@@ -63,16 +64,12 @@ export default class LeaveRequest extends Vue {
   data: Array<Object> = []
 
   async created() {
-    $axios.setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg5MzM0OTEzLCJleHAiOjE1ODk2OTQ5MTN9.ew9IaIcd_3joFFNrz3PGhV4o0eL0GlwM_1PJCBWWsEQ',
-      'Bearer'
-    )
-    const {data} = await $axios.get(`leaves/absences`)
+    const { data } = await $axios.get(`leaves/absences?month=5&year=2020`)
     this.data = data.absences.map((absence, index) => {
       const displayData: DisplayData = {
         stt: index + 1,
         absent: absence.date,
-        hours: absence.hours,
+        hours: absence.hours
       }
       return displayData
     })

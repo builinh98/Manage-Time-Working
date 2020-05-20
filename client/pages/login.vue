@@ -12,6 +12,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import LoginForm from '@/components/LoginForm.vue'
 
 @Component({
+  layout: 'console',
   components: {
     LoginForm
   }

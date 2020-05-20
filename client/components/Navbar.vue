@@ -8,7 +8,7 @@
     <v-spacer />
     <v-avatar size="30">
       <!-- <v-icon size="60">mdi-account-circle</v-icon> -->
-      <v-icon size="30">mdi-account-switch</v-icon>
+      <v-icon size="30" @click="logout">mdi-account-switch</v-icon>
     </v-avatar>
   </v-app-bar>
 </template>
@@ -18,5 +18,14 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class Navbar extends Vue {
   drawer: boolean = false
+
+  async logout() {
+    try {
+     this.$toast.show('Logout ...', { duration: 1000 })
+     await this.$auth.logout()
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 }
 </script>

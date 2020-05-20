@@ -34,6 +34,9 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { getModule } from 'vuex-module-decorators'
+import { userModule } from '@/store';
+
 @Component
 export default class LoginForm extends Vue {
   valid: boolean = true
@@ -42,13 +45,25 @@ export default class LoginForm extends Vue {
   password: string = '2321998'
   // usernameRules: Array = ''
   // passwordRules: Array = ''
+  created() {
+    userModule.setUserInfo('linhbq.intern@gmail.com')
+  }
 
   async login() {
     try {
-      let response = await this.$auth.loginWith('local', { data: {username: this.username, password: this.password} })
-      console.log(response)
+      this.$toast.show('Logging in...', { duration: 1000 })
+      const response: any = await this.$auth.loginWith('local', {
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      })
+      const token = response.data.user.token
+      const user = response.data.user
+      this.$auth.setToken('local', token)
+      this.$auth.setUser(user)
     } catch (err) {
-      console.log(err)
+      console.log(err.message)
     }
   }
 }

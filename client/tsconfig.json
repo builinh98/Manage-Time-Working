@@ -15,6 +15,7 @@
     "noEmit": true,
     "noImplicitAny": false,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
@@ -27,7 +28,9 @@
     "types": [
       "@types/node",
       "@nuxt/types",
+      "@nuxtjs/auth",
       "@types/nuxtjs__auth",
+      "@nuxtjs/toast",
       "@nuxtjs/axios",
       "vuetify"
     ]
@@ -36,5 +39,5 @@
     "node_modules",
     ".nuxt",
     "dist"
-  ]
+  ],
 }

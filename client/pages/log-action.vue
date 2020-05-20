@@ -42,7 +42,8 @@ interface DisplayData {
     Toolbar,
     Pagination,
     Table
-  }
+  },
+  middleware: ['auth']
 })
 export default class LogAction extends Vue {
   site: string = 'logaction'

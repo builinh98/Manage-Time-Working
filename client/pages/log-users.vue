@@ -59,7 +59,8 @@ interface DisplayData {
     AddLogUsersModal,
     EditLogUsersModal,
     ConfirmModal
-  }
+  },
+  middleware: ['auth']
 })
 export default class LogUser extends Vue {
   site: string = 'loguser'
@@ -117,10 +118,6 @@ export default class LogUser extends Vue {
   }
 
   async created() {
-    $axios.setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxpbmhicS5pbnRlcm5AZ21haWwuY29tIiwiaWF0IjoxNTg5MzM0OTEzLCJleHAiOjE1ODk2OTQ5MTN9.ew9IaIcd_3joFFNrz3PGhV4o0eL0GlwM_1PJCBWWsEQ',
-      'Bearer'
-    )
     const resCheckins = await $axios.get(`times/checkins`)
     const resCheckouts = await $axios.get(`times/checkouts`)
     const checkins = resCheckins.data.map((checkin) => {
