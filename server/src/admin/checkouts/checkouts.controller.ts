@@ -15,7 +15,7 @@ import { CreateCheckoutDto } from './dto/create-checkout.dto';
 import { Checkout } from 'src/times/checkout.entity';
 import { CheckoutsService } from './checkouts.service';
 
-@Controller('admins/checkouts')
+@Controller('api/admins/checkouts')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('admin')
 export class CheckoutsController {

@@ -22,7 +22,7 @@ import { CreateResponseDto } from './dto/create-response.dto';
 import { LeavesService } from './leaves.service';
 import { LeavesResponse } from './interfaces/leaves.interfaces';
 
-@Controller('leaves')
+@Controller('api/leaves')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class LeavesController {
   constructor(private readonly leavesService: LeavesService) {}

@@ -134,18 +134,20 @@ export class TimesService {
   async getWorkingHoursForUser(
     user: User,
     month: string,
+    year: string
   ): Promise<WorkingResponse[]> {
     const checkins = await this.checkinsRepository
       .createQueryBuilder()
       .where('user_id = :userId', { userId: user.id })
       .andWhere('MONTH(timestamp) = :month', { month: month })
+      .andWhere('YEAR(timestamp) = :year', { year: year })
       .getMany();
-
     const checkouts = await this.checkoutsRepository
       .createQueryBuilder('checkout')
       .leftJoinAndSelect('checkout.checkin', 'checkin')
-      .where('user_id = :userId', { userId: user.id })
+      .where('checkout.user_id = :userId', { userId: user.id })
       .andWhere('MONTH(checkin.timestamp) = :month', { month: month })
+      .andWhere('YEAR(checkin.timestamp) = :year', { year: year })
       .getMany();
 
     const workings = checkins.map(checkin => {
@@ -174,19 +176,21 @@ export class TimesService {
 
   async getWorkingHoursForAdmin(
     userId: string,
-    month: string
+    month: string,
+    year: string
   ): Promise<WorkingResponse[]> {
     const checkins = await this.checkinsRepository
       .createQueryBuilder()
       .where('user_id = :userId', { userId: userId })
       .andWhere('MONTH(timestamp) = :month', { month: month })
+      .andWhere('YEAR(timestamp) = :year', { year: year })
       .getMany();
-
     const checkouts = await this.checkoutsRepository
       .createQueryBuilder('checkout')
       .where('checkout.user_id = :userId', { userId: userId })
       .leftJoinAndSelect('checkout.checkin', 'checkin')
       .andWhere('MONTH(checkin.timestamp) = :month', { month: month })
+      .andWhere('YEAR(checkin.timestamp) = :year', { year: year })
       .getMany();
 
     const workings = checkins.map(checkin => {

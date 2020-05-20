@@ -20,21 +20,25 @@ import { CreateCheckinDto } from './dto/create-checkin.dto';
 import { TimesService } from './times.service';
 import { WorkingResponse } from './interfaces/times.interfaces';
 
-@Controller('times')
+@Controller('api/times')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class TimesController {
-  constructor(
-    private readonly timesService: TimesService,
-    ) {}
+  constructor(private readonly timesService: TimesService) {}
 
   //////////////////////////////////// Checkin
   @Post('checkins')
-  createCheckin(@UserDecorator() user: User, @Body() createCheckinDto: CreateCheckinDto): Promise<Checkin> {
+  createCheckin(
+    @UserDecorator() user: User,
+    @Body() createCheckinDto: CreateCheckinDto,
+  ): Promise<Checkin> {
     return this.timesService.createCheckin(user, createCheckinDto);
   }
 
   @Get('checkins')
-  findCheckinForUser(@UserDecorator() user: User, @Query('page') page: number): Promise<Checkin[]> {
+  findCheckinForUser(
+    @UserDecorator() user: User,
+    @Query('page') page: number,
+  ): Promise<Checkin[]> {
     return this.timesService.findCheckinForUser(user, page, true);
   }
 
@@ -42,15 +46,21 @@ export class TimesController {
   findOneCheckin(@Param() params): Promise<Checkin> {
     return this.timesService.findOneCheckin(params.id);
   }
-  
+
   //////////////////////////////////// Checkout
   @Post('checkouts')
-  createCheckout(@UserDecorator() user:User, @Body() createcheckoutDto: CreateCheckoutDto): Promise<Checkout> {
+  createCheckout(
+    @UserDecorator() user: User,
+    @Body() createcheckoutDto: CreateCheckoutDto,
+  ): Promise<Checkout> {
     return this.timesService.createCheckout(user, createcheckoutDto);
   }
 
   @Get('checkouts')
-  findCheckoutForUser(@UserDecorator() user: User, @Query('page') page: number): Promise<Checkout[]> {
+  findCheckoutForUser(
+    @UserDecorator() user: User,
+    @Query('page') page: number,
+  ): Promise<Checkout[]> {
     return this.timesService.findCheckoutForUser(user, page, true);
   }
 
@@ -58,15 +68,22 @@ export class TimesController {
   findOneCheckout(@Param('id') id: string): Promise<Checkout> {
     return this.timesService.findOneCheckout(id);
   }
-  
+
   @Get('workings')
-  getWorkingHoursForUser(@UserDecorator() user: User, @Query('month') month: string): Promise<WorkingResponse[]> {
-    return this.timesService.getWorkingHoursForUser(user, month)
+  getWorkingHoursForUser(
+    @UserDecorator() user: User,
+    @Query('month') month: string,
+    @Query('year') year: string
+  ): Promise<WorkingResponse[]> {
+    return this.timesService.getWorkingHoursForUser(user, month, year);
   }
 
   @Get('workings/:userId')
-  getWorkingHoursForAdmin(@Param('userId') userId: string, @Query('month') month: string): Promise<WorkingResponse[]> {
-    return this.timesService.getWorkingHoursForAdmin(userId, month)
+  getWorkingHoursForAdmin(
+    @Param('userId') userId: string,
+    @Query('month') month: string,
+    @Query('year') year: string
+  ): Promise<WorkingResponse[]> {
+    return this.timesService.getWorkingHoursForAdmin(userId, month, year);
   }
-
 }

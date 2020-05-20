@@ -15,7 +15,7 @@ import { CreateCheckinDto } from './dto/create-checkin.dto';
 import { Checkin } from 'src/times/checkin.entity';
 import { CheckinsService } from './checkins.service';
 
-@Controller('admins/checkins')
+@Controller('api/admins/checkins')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('admin')
 export class CheckinsController {
