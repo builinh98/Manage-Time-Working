@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { CheckinsModule } from './checkins/checkins.module';
 import { CheckoutsModule } from './checkouts/checkouts.module';
 import { LogsModule } from './logs/logs.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { RequestsModule } from './requests/requests.module';
 import { ResponsesModule } from './responses/responses.module';
 import { AuthModule } from './auth/auth.module';
@@ -28,6 +30,9 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
       database: process.env.DATABASE_DB,
       synchronize: true,
       entities: ['dist/**/*.entity.js'],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
     }),
     MailerModule.forRoot({
       transport: {
