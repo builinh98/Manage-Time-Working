@@ -18,7 +18,7 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/toast": "^3.3.0",
     "material-design-icons-iconfont": "^5.0.1",
-    "moment": "^2.25.3",
+    "moment": "^2.29.4",
     "nuxt": "^2.0.0",
     "nuxt-property-decorator": "^2.5.1",
     "vuex-persist": "^2.2.0"
